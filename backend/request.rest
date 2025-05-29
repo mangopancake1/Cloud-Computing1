@@ -1,0 +1,112 @@
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+### ==================================== ###
+### 👥 USER ROUTES
+### ====================================
+
+# 🔍 Get All Users
+GET http://localhost:5005/users
+Content-Type: application/json
+Authorization: {{token}}
+
+###
+
+# 👤 Get User by ID
+GET http://localhost:5005/users/1
+Content-Type: application/json
+Authorization: {{token}}
+
+###
+
+# ➕ Create User (Register)
+POST http://localhost:5005/create-users
+Content-Type: application/json
+
+{
+  "username": "arrafi",
+  "email": "arrafi@example.com",
+  "password": "123"
+}
+
+###
+
+# ✏️ Update User
+PUT http://localhost:5005/update-users/1
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "username": "arrafi_nuristiawan",
+  "email": "arrafi_updated@example.com",
+  "password": "newpassword123"
+}
+
+###
+
+# ❌ Delete User
+DELETE http://localhost:5005/delete-users/1
+Content-Type: application/json
+Authorization: {{token}}
+
+###
+
+# 🔑 Login User
+POST http://localhost:5005/login
+Content-Type: application/json
+
+{
+  "username": "arrafi",
+  "password": "123"
+}
+
+###
+
+# 🚪 Logout User
+POST http://localhost:5005/logout
+Authorization: {{token}}
+
+###
+
+### ==================================== ###
+### 📝 NOTE ROUTES
+### ====================================
+
+# 📄 Get All Notes
+GET http://localhost:5005/notes
+Authorization: {{token}}
+
+###
+
+# 📄 Get Note by ID
+GET http://localhost:5005/notes/1
+Authorization: {{token}}
+
+###
+
+# ➕ Create New Note
+POST http://localhost:5005/notes
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "title": "Belajar Express.js2",
+  "content": "Hari ini saya belajar tentang Express.js di Node.js."
+}
+
+###
+
+# ✏️ Update Note by ID
+PATCH http://localhost:5005/notes/11
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "title": "Belajar Express.js (Update)",
+  "content": "Hari ini saya menambahkan middleware ke dalam proyek Express.js."
+}
+
+###
+
+# ❌ Delete Note by ID
+DELETE http://localhost:5005/notes/11
+Authorization: {{token}}

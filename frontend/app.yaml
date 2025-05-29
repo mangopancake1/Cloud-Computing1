@@ -1,0 +1,21 @@
+runtime: nodejs20
+service: notes-fe0141
+instance_class: F1
+
+handlers:
+  # Untuk file statis seperti .js, .css, gambar, dll
+  - url: /(.*\.(js|css|png|jpg|jpeg|gif|svg|ico|json|txt|map|woff2?|ttf))$
+    static_files: build/\1
+    upload: build/.*\.(js|css|png|jpg|jpeg|gif|svg|ico|json|txt|map|woff2?|ttf)$
+
+  # Untuk service worker (opsional)
+  - url: /service-worker.js
+    static_files: build/service-worker.js
+    upload: build/service-worker.js
+
+  # Untuk semua route selain file — arahkan ke index.html
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
+
+default_expiration: "1h"
