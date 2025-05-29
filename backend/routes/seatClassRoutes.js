@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getSeatClassesByConcert,
+  getSeatClasses,
   getSeatClassById,
   createSeatClass,
   updateSeatClass,
@@ -12,7 +12,7 @@ import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
 const router = express.Router();
 
-router.get("/", verifyUser, getSeatClassesByConcert);
+router.get("/", verifyUser, getSeatClasses);
 router.get("/:id", verifyUser, getSeatClassById);
 
 
