@@ -2,197 +2,145 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const getUsers = async (req, res) => {
+// ✅ Ambil semua user (admin only)
+export const getUsers = async (req, res) => {
   try {
-    const response = await User.findAll();
-    res.status(200).json(response);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-const getUserById = async (req, res) => {
-  try {
-    const response = await User.findOne({
-      where: { id: req.params.id },
+    const response = await User.findAll({
+      attributes: { exclude: ["password", "refresh_token"] }
     });
-    if (!response) {
-      return res.status(404).json({ message: "User not found" });
-    }
     res.status(200).json(response);
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ msg: error.message });
   }
 };
 
-const createUser = async (req, res) => {
+// ✅ Ambil user berdasarkan ID
+export const getUserById = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const user = await User.findByPk(req.params.id, {
+      attributes: { exclude: ["password", "refresh_token"] }
+    });
+    if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 
-    // ✅ Cek apakah username sudah terdaftar
+// ✅ Registrasi user baru
+export const createUser = async (req, res) => {
+  const { username, email, password } = req.body;
+  try {
+    if (!username || !email || !password) {
+      return res.status(400).json({ msg: "Semua field wajib diisi" });
+    }
+
     const existingUser = await User.findOne({ where: { username } });
     if (existingUser) {
       return res.status(400).json({ msg: "Username sudah digunakan" });
     }
 
-    // ✅ Enkripsi password dan simpan
-    const encryptPassword = await bcrypt.hash(password, 5);
+    const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       username,
       email,
-      password: encryptPassword,
+      password: hashedPassword
     });
 
-    res.status(201).json({ msg: "Register Berhasil" });
+    res.status(201).json({ msg: "Registrasi berhasil" });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ msg: "Terjadi kesalahan di server" });
+    res.status(500).json({ msg: error.message });
   }
 };
 
-const updateUser = async (req, res) => {
+// ✅ Perbarui data user
+export const updateUser = async (req, res) => {
+  const { username, email, password } = req.body;
   try {
-    const { username, email, password } = req.body;
-    let updatedData = {
+    const updatedData = {
       username,
-      email,
-    }; //nyimpen jadi object
+      email
+    };
 
     if (password) {
-      const encryptPassword = await bcrypt.hash(password, 5);
-      updatedData.password = encryptPassword;
+      updatedData.password = await bcrypt.hash(password, 10);
     }
 
     const result = await User.update(updatedData, {
-      where: {
-        id: req.params.id,
-      },
+      where: { id: req.params.id }
     });
 
-    // Periksa apakah ada baris yang terpengaruh (diupdate)
     if (result[0] === 0) {
-      return res.status(404).json({
-        status: "failed",
-        message: "User tidak ditemukan atau tidak ada data yang berubah",
-        updatedData: updatedData,
-        result,
-      });
+      return res.status(404).json({ msg: "User tidak ditemukan atau tidak ada perubahan" });
     }
 
-    res.status(200).json({ msg: "User Updated" });
+    res.status(200).json({ msg: "Data user berhasil diperbarui" });
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ msg: error.message });
   }
 };
 
-const deleteUser = async (req, res) => {
+// ✅ Hapus user
+export const deleteUser = async (req, res) => {
   try {
-    await User.destroy({
-      where: { id: req.params.id },
+    const deleted = await User.destroy({
+      where: { id: req.params.id }
     });
-    res.status(200).json({ message: "User deleted" });
+    if (!deleted) return res.status(404).json({ msg: "User tidak ditemukan" });
+    res.status(200).json({ msg: "User berhasil dihapus" });
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({ msg: error.message });
   }
 };
 
-const loginHandler = async (req, res) => {
+// ✅ Login user
+export const loginHandler = async (req, res) => {
+  const { username, password } = req.body;
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({
-      where: {
-        username: username,
-      },
+    const user = await User.findOne({ where: { username } });
+    if (!user) return res.status(400).json({ msg: "Username atau password salah" });
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) return res.status(400).json({ msg: "Username atau password salah" });
+
+    const { password: _, refresh_token: __, ...safeUser } = user.toJSON();
+
+    const accessToken = jwt.sign(safeUser, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "30m"
     });
 
-    if (user) {
-      const userPlain = user.toJSON(); // Konversi ke object
-      const { password: _, refresh_token: __, ...safeUserData } = userPlain;
+    const refreshToken = jwt.sign(safeUser, process.env.REFRESH_TOKEN_SECRET, {
+      expiresIn: "1d"
+    });
 
-      const decryptPassword = await bcrypt.compare(password, user.password);
-      if (decryptPassword) {
-        const accessToken = jwt.sign(
-          safeUserData,
-          process.env.ACCESS_TOKEN_SECRET,
-          {
-            expiresIn: "30m",
-          }
-        );
-        const refreshToken = jwt.sign(
-          safeUserData,
-          process.env.REFRESH_TOKEN_SECRET,
-          {
-            expiresIn: "1d",
-          }
-        );
-        await User.update(
-          { refresh_token: refreshToken },
-          {
-            where: {
-              id: user.id,
-            },
-          }
-        );
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: false, //ngatur cross-site scripting, untuk penggunaan asli aktifkan karena bisa nyegah serangan fetch data dari website "document.cookies"
-          sameSite: "none", //ini ngatur domain yg request misal kalo strict cuman bisa akseske link dari dan menuju domain yg sama, lax itu bisa dari domain lain tapi cuman bisa get
-          maxAge: 24 * 60 * 60 * 1000,
-          secure: true, //ini ngirim cookies cuman bisa dari https, kenapa? nyegah skema MITM di jaringan publik, tapi pas development di false in aja
-        });
-        res.status(200).json({
-          status: "Succes",
-          message: "Login Berhasil",
-          safeUserData,
-          accessToken,
-        });
-      } else {
-        res.status(400).json({
-          status: "Failed",
-          message: "Paassword atau email salah",
-        });
-      }
-    } else {
-      res.status(400).json({
-        status: "Failed",
-        message: "Paassword atau email salah",
-      });
-    }
+    await User.update({ refresh_token: refreshToken }, { where: { id: user.id } });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      sameSite: "Strict",
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000
+    });
+
+    res.status(200).json({
+      msg: "Login berhasil",
+      user: safeUser,
+      accessToken
+    });
   } catch (error) {
-    res.status(error.statusCode || 500).json({
-      status: "error",
-      message: error.message,
-    });
+    res.status(500).json({ msg: error.message });
   }
 };
 
-//nambah logout
-const logout = async (req, res) => {
+// ✅ Logout user
+export const logout = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) return res.sendStatus(204);
-  const user = await User.findOne({
-    where: {
-      refresh_token: refreshToken,
-    },
-  });
-  if (!user.refresh_token) return res.sendStatus(204);
-  const userId = user.id;
-  await User.update(
-    { refresh_token: null },
-    {
-      where: {
-        id: userId,
-      },
-    }
-  );
-  res.clearCookie("refreshToken"); //ngehapus cookies yg tersimpan
+
+  const user = await User.findOne({ where: { refresh_token: refreshToken } });
+  if (!user) return res.sendStatus(204);
+
+  await User.update({ refresh_token: null }, { where: { id: user.id } });
+  res.clearCookie("refreshToken");
   return res.sendStatus(200);
-};
-export {
-  getUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser,
-  loginHandler,
-  logout,
 };

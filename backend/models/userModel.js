@@ -1,39 +1,42 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 
-const User = db.define(
-  "users",{ 
-    id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
+const { DataTypes } = Sequelize;
+
+const User = db.define("users", {
+  id: {
+    type: DataTypes.INTEGER,
     autoIncrement: true,
-    },
-    username: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    refresh_token: {
-      type: Sequelize.TEXT,
-      allowNull: true,
+    primaryKey: true,
+  },
+  username: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    unique: true,
+  },
+  email: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
     },
   },
-  {
-    freezeTableName: true,
-    createdAt: "tanggal_dibuat",
-    updatedAt: "tanggal_diperbarui",
-  }
-);
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  role: {
+    type: DataTypes.ENUM("user", "admin"),
+    defaultValue: "user",
+    allowNull: false,
+  },
+  refresh_token: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+}, {
+  freezeTableName: true,
+});
 
 export default User;
-
-(async () => {
-  await db.sync();
-})();

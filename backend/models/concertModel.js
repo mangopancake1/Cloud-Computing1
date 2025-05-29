@@ -3,26 +3,30 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Note = db.define("notes", {
+const Concert = db.define("concerts", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  title: {
+  concertName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  content: {
-    type: DataTypes.TEXT,
+  venue: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
-   userId: {
-    type: DataTypes.INTEGER,
+  date: {
+    type: DataTypes.DATE,
     allowNull: false,
-    },
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  }
 }, {
   freezeTableName: true,
 });
 
-export default Note;
+export default Concert;
