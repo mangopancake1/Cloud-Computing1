@@ -3,15 +3,15 @@ import Concert from "../models/concertModel.js";
 // 📌 Buat konser baru (admin)
 export const createConcert = async (req, res) => {
   try {
-    const { name, location, date, description } = req.body;
+    const { concertName, venue, date, description } = req.body;
 
-    if (!name || !location || !date) {
-      return res.status(400).json({ msg: "Nama, lokasi, dan tanggal wajib diisi" });
+    if (!concertName || !venue || !date) {
+      return res.status(400).json({ msg: "Nama konser, venue, dan tanggal wajib diisi" });
     }
 
     const newConcert = await Concert.create({
-      name,
-      location,
+      concertName,
+      venue,
       date,
       description,
     });
@@ -46,13 +46,13 @@ export const getConcertById = async (req, res) => {
 // 📌 Update konser berdasarkan ID (admin)
 export const updateConcert = async (req, res) => {
   try {
-    const { name, location, date, description } = req.body;
+    const { concertName, venue, date, description } = req.body;
 
     const concert = await Concert.findByPk(req.params.id);
     if (!concert) return res.status(404).json({ msg: "Konser tidak ditemukan" });
 
-    concert.name = name || concert.name;
-    concert.location = location || concert.location;
+    concert.concertName = concertName || concert.concertName;
+    concert.venue = venue || concert.venue;
     concert.date = date || concert.date;
     concert.description = description || concert.description;
 
@@ -76,4 +76,3 @@ export const deleteConcert = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-

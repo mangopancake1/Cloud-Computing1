@@ -1,26 +1,17 @@
 import SeatClass from "../models/seatClassModel.js";
-import Concert from "../models/concertModel.js";
 
-// 📌 Tambah kelas kursi untuk konser tertentu (admin)
+// 📌 Tambah kelas kursi (admin)
 export const createSeatClass = async (req, res) => {
   try {
-    const { concertId, className, price, capacity } = req.body;
+    const { className, price } = req.body;
 
-    if (!concertId || !className || !price || !capacity) {
-      return res.status(400).json({ msg: "Semua field wajib diisi" });
-    }
-
-    const concert = await Concert.findByPk(concertId);
-    if (!concert) {
-      return res.status(404).json({ msg: "Konser tidak ditemukan" });
+    if (!className || !price) {
+      return res.status(400).json({ msg: "Nama kelas dan harga wajib diisi" });
     }
 
     const seatClass = await SeatClass.create({
-      concertId,
       className,
       price,
-      capacity,
-      remaining: capacity,
     });
 
     res.status(201).json({ msg: "Kelas kursi berhasil ditambahkan", data: seatClass });
@@ -29,15 +20,10 @@ export const createSeatClass = async (req, res) => {
   }
 };
 
-// 📌 Ambil semua kelas kursi untuk konser tertentu
-export const getSeatClassesByConcert = async (req, res) => {
+// 📌 Ambil semua kelas kursi
+export const getSeatClasses = async (req, res) => {
   try {
-    const { concertId } = req.params;
-
-    const seatClasses = await SeatClass.findAll({
-      where: { concertId },
-    });
-
+    const seatClasses = await SeatClass.findAll();
     res.status(200).json(seatClasses);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -62,12 +48,10 @@ export const updateSeatClass = async (req, res) => {
     const seatClass = await SeatClass.findByPk(req.params.id);
     if (!seatClass) return res.status(404).json({ msg: "Kelas kursi tidak ditemukan" });
 
-    const { className, price, capacity, remaining } = req.body;
+    const { className, price } = req.body;
 
     seatClass.className = className || seatClass.className;
     seatClass.price = price || seatClass.price;
-    seatClass.capacity = capacity || seatClass.capacity;
-    seatClass.remaining = remaining || seatClass.remaining;
 
     await seatClass.save();
 

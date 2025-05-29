@@ -9,46 +9,40 @@ export const createTicket = async (req, res) => {
     const {
       seatClassId,
       quantity,
-      name,
-      email,
-      gender
+      buyerName,
+      buyerEmail,
+      buyerGender
     } = req.body;
 
     const userId = req.user.id;
 
-    if (!seatClassId || !quantity || !name || !email || !gender) {
+    if (!seatClassId || !quantity || !buyerName || !buyerEmail || !buyerGender) {
       return res.status(400).json({ msg: "Semua field wajib diisi" });
     }
 
     const seatClass = await SeatClass.findByPk(seatClassId);
     if (!seatClass) return res.status(404).json({ msg: "Seat class tidak ditemukan" });
 
-    if (seatClass.remaining < quantity) {
-      return res.status(400).json({ msg: "Jumlah kursi tidak mencukupi" });
-    }
-
     const totalPrice = seatClass.price * quantity;
 
     const ticket = await Ticket.create({
-      seatClassId,
       userId,
-      name,
-      email,
-      gender,
+      concertId: seatClass.concertId, // ✅ jika seatClass punya concertId
+      seatClassId,
       quantity,
-      totalPrice
+      totalPrice,
+      buyerName,
+      buyerEmail,
+      buyerGender
     });
-
-    seatClass.remaining -= quantity;
-    await seatClass.save();
 
     res.status(201).json({
       msg: "Tiket berhasil dipesan",
       data: {
         ticketId: ticket.id,
-        name,
-        email,
-        gender,
+        buyerName,
+        buyerEmail,
+        buyerGender,
         seatClass: seatClass.className,
         concertId: seatClass.concertId,
         quantity,
@@ -79,7 +73,7 @@ export const getTicketsByUser = async (req, res) => {
   }
 };
 
-// 📌 (Opsional) Admin melihat semua tiket
+// 📌 Admin melihat semua tiket
 export const getAllTickets = async (req, res) => {
   try {
     const tickets = await Ticket.findAll({
@@ -118,4 +112,3 @@ export const getTicketById = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
-
