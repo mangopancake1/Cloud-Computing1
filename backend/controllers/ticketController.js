@@ -1,5 +1,4 @@
 import Ticket from "../models/ticketModel.js";
-import SeatClass from "../models/seatClassModel.js";
 import Concert from "../models/concertModel.js";
 import User from "../models/userModel.js";
 
@@ -7,7 +6,6 @@ import User from "../models/userModel.js";
 export const createTicket = async (req, res) => {
   try {
     const {
-      seatClassId,
       quantity,
       buyerName,
       buyerEmail,

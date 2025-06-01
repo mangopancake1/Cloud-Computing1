@@ -17,10 +17,6 @@ const Ticket = db.define("tickets", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  seatClassId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   quantity: {
     type: DataTypes.INTEGER,
     allowNull: false,

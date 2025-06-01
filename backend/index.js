@@ -8,7 +8,6 @@ import { db } from "./models/index.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import concertRoutes from "./routes/concertRoutes.js";
-import seatClassRoutes from "./routes/seatClassRoutes.js";
 import ticketRoutes from "./routes/ticketRoutes.js";
 
 dotenv.config();
@@ -36,8 +35,7 @@ app.use(express.json());
 // Mount route berdasarkan fungsi dan akses
 app.use("/api/auth", authRoutes);           // Autentikasi user & admin
 app.use("/api/users", userRoutes);           // Manajemen user
-app.use("/api/concerts", concertRoutes);     // CRUD konser
-app.use("/api/seat-classes", seatClassRoutes);  // CRUD kelas tempat duduk
+app.use("/api/concerts", concertRoutes);     // CRUD konser // CRUD kelas tempat duduk
 app.use("/api/tickets", ticketRoutes);       // Manajemen tiket pembelian
 
 // Sinkronisasi database dan start server
