@@ -11,9 +11,10 @@ import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
 const router = express.Router();
 
+router.get("/:id", verifyUser, getTicketsByUser,); 
+router.post("/", verifyUser, createTicket); 
+
+router.put("/:id", verifyAdmin, getTicketById); 
 router.get("/", verifyAdmin, getAllTickets); // admin lihat semua tiket
-router.get("/:id", verifyUser, getTicketsByUser,); // user lihat tiket sendiri (cek di controller)
-router.post("/", verifyUser, createTicket); // user pesan tiket
-router.put("/:id", verifyAdmin, getTicketById); // admin update tiket
 
 export default router;

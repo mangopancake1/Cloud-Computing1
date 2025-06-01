@@ -11,9 +11,11 @@ import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
 const router = express.Router();
 
+
+router.put("/:id", verifyUser, updateUser); 
+
 router.get("/", verifyAdmin, getUsers);
 router.get("/:id", verifyAdmin, getUserById);
-router.put("/:id", verifyUser, updateUser); // cek di controller: user hanya bisa update sendiri
 router.delete("/:id", verifyAdmin, deleteUser);
 
 export default router;
