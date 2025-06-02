@@ -11,12 +11,14 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
       const res = await loginUser(form);
-      localStorage.setItem("token", res.data.accessToken);
+      // Simpan token ke localStorage
+      localStorage.setItem("token", res.data.accessToken || res.data.token);
       navigate("/concerts");
     } catch (err) {
-      setError("Username atau password salah");
+      setError(err?.response?.data?.msg || "Login gagal. Username atau password salah.");
     }
   };
 

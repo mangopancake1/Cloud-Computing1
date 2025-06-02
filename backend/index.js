@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 5010;
 
 // Konfigurasi CORS - sesuaikan origin frontend jika ada
 const allowedOrigins = [
-  "",    // Contoh frontend lokal
-  "", // Sesuaikan dengan domain frontend produksi
+  "http://localhost:3000", // frontend lokal
+  // Tambahkan domain frontend produksi jika sudah deploy
 ];
 
 app.use(

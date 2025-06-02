@@ -7,15 +7,20 @@ const RegisterForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
       await registerUser(form);
       navigate("/login");
     } catch (err) {
-      setError("Registrasi gagal. Username/email sudah digunakan.");
+      setError(
+        err?.response?.data?.msg ||
+        "Registrasi gagal. Username/email sudah digunakan."
+      );
     }
   };
 
@@ -26,23 +31,44 @@ const RegisterForm = () => {
         <div className="field">
           <label className="label">Username</label>
           <div className="control">
-            <input className="input" name="username" value={form.username} onChange={handleChange} required />
+            <input
+              className="input"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
           </div>
         </div>
         <div className="field">
           <label className="label">Email</label>
           <div className="control">
-            <input className="input" name="email" value={form.email} onChange={handleChange} required />
+            <input
+              className="input"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
           </div>
         </div>
         <div className="field">
           <label className="label">Password</label>
           <div className="control">
-            <input className="input" type="password" name="password" value={form.password} onChange={handleChange} required />
+            <input
+              className="input"
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
           </div>
         </div>
         {error && <p className="has-text-danger">{error}</p>}
-        <button className="button is-primary" type="submit">Register</button>
+        <button className="button is-primary" type="submit">
+          Register
+        </button>
       </form>
     </section>
   );
