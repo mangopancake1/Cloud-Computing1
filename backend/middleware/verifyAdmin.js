@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+// Hanya untuk admin (token valid & role === 'admin')
 export const verifyAdmin = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];

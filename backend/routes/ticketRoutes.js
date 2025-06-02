@@ -19,6 +19,6 @@ router.post("/create-ticket", verifyUser, createTicket);
 router.put("/tickets/:id", verifyUser, updateTicket);
 router.delete("/delete-ticket/:id", verifyUser, deleteTicket);
 router.get("/tickets", verifyAdmin, getAllTickets);
-router.get("/tickets/:id", verifyAdmin, getTicketById);
+router.get("/admin/tickets/:id", verifyAdmin, getTicketById);
 
 export default router;

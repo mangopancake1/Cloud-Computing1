@@ -29,7 +29,7 @@ export const getUserById = async (req, res) => {
 
 // ✅ Registrasi user baru
 export const createUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
   try {
     if (!username || !email || !password) {
       return res.status(400).json({ msg: "Semua field wajib diisi" });
@@ -46,11 +46,18 @@ export const createUser = async (req, res) => {
       return res.status(400).json({ msg: "Email sudah digunakan" });
     }
 
+    // Validasi role hanya boleh 'user' atau 'admin'
+    let userRole = "user";
+    if (role && (role === "user" || role === "admin")) {
+      userRole = role;
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role: userRole
     });
 
     res.status(201).json({ msg: "Registrasi berhasil" });

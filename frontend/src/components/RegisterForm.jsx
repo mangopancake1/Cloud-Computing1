@@ -3,7 +3,7 @@ import { registerUser } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const [form, setForm] = useState({ username: "", email: "", password: "", role: "user" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -67,6 +67,17 @@ const RegisterForm = () => {
               onChange={handleChange}
               required
             />
+          </div>
+        </div>
+        <div className="field">
+          <label className="label">Role</label>
+          <div className="control">
+            <div className="select">
+              <select name="role" value={form.role} onChange={handleChange} required>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
           </div>
         </div>
         {error && <p className="has-text-danger">{error}</p>}

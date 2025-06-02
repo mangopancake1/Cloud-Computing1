@@ -16,7 +16,7 @@ router.post("/create-users", createUser); // register user (open/public)
 
 router.put("/update-users/:id", verifyUser, updateUser);
 
-router.get("/users", verifyAdmin, getUsers);
+router.get("/users", verifyAdmin, getUsers); // hanya admin
 router.get("/users/:id", verifyAdmin, getUserById);
 router.delete("/delete-users/:id", verifyAdmin, deleteUser);
 
