@@ -1,6 +1,6 @@
 import Concert from "../models/concertModel.js";
 
-// 📌 Buat konser baru (admin)
+// Pastikan field yang diterima: concertName, venue, date, description
 export const createConcert = async (req, res) => {
   try {
     const { concertName, venue, date, description } = req.body;

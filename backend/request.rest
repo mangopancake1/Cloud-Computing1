@@ -91,9 +91,10 @@ Authorization: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Blackpink World Tour",
+  "concertName": "Blackpink World Tour",
   "date": "2025-08-10",
-  "location": "Stadion Mandala Krida"
+  "venue": "Stadion Mandala Krida",
+  "description": "Konser terbesar tahun ini"
 }
 
 ###
