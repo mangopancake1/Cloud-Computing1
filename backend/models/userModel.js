@@ -12,12 +12,12 @@ const User = db.define("users", {
   username: {
     type: DataTypes.STRING(50),
     allowNull: false,
-    unique: true,
+    unique: true, // tambahkan unique di sini
   },
   email: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true,
+    unique: true, // tambahkan unique di sini
     validate: {
       isEmail: true,
     },
