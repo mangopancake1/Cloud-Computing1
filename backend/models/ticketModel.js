@@ -17,6 +17,18 @@ const Ticket = db.define("tickets", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  concertName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  venue: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
   quantity: {
     type: DataTypes.INTEGER,
     allowNull: false,

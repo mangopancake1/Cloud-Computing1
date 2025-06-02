@@ -40,7 +40,10 @@ export const createTicket = async (req, res) => {
       totalPrice,
       buyerName,
       buyerEmail,
-      buyerGender
+      buyerGender,
+      concertName: concert.concertName,
+      venue: concert.venue,
+      date: concert.date
     });
 
     res.status(201).json({
@@ -53,7 +56,10 @@ export const createTicket = async (req, res) => {
         totalPrice,
         buyerName,
         buyerEmail,
-        buyerGender
+        buyerGender,
+        concertName: concert.concertName,
+        venue: concert.venue,
+        date: concert.date
       }
     });
   } catch (error) {
