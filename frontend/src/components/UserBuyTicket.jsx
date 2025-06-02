@@ -121,6 +121,13 @@ const UserBuyTicket = () => {
           </div>
         </div>
         <button className="button is-primary" type="submit">Done</button>
+        <button
+          type="button"
+          className="button is-light ml-2"
+          onClick={() => navigate("/user/concerts")}
+        >
+          Back
+        </button>
       </form>
     </section>
   );

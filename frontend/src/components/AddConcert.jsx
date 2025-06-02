@@ -56,6 +56,13 @@ const AddConcert = () => {
           </div>
         </div>
         <button className="button is-primary" type="submit">Simpan</button>
+        <button
+          type="button"
+          className="button is-light ml-2"
+          onClick={() => navigate("/concerts")}
+        >
+          Back
+        </button>
       </form>
     </section>
   );

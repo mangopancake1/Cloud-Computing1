@@ -28,7 +28,21 @@ const ConcertList = () => {
 
   return (
     <section className="section">
-      <h1 className="title">Daftar Konser</h1>
+      <div className="level">
+        <h1 className="title">Daftar Konser</h1>
+        {isAdmin && (
+          <button
+            className="button is-danger"
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("role");
+              window.location.href = "/welcome";
+            }}
+          >
+            Logout
+          </button>
+        )}
+      </div>
       {isAdmin && (
         <Link to="/concerts/add" className="button is-primary mb-3">Tambah Konser</Link>
       )}

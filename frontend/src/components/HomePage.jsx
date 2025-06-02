@@ -8,7 +8,6 @@ const HomePage = () => (
       <div className="buttons mt-4">
         <Link to="/login" className="button is-primary">Login</Link>
         <Link to="/register" className="button is-link">Register</Link>
-        <Link to="/concerts" className="button is-info">Lihat Konser</Link>
       </div>
     </div>
   </section>

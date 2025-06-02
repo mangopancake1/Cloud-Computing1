@@ -23,9 +23,20 @@ const UserConcertList = () => {
     navigate(`/user/concerts/buy/${concertId}`);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/welcome");
+  };
+
   return (
     <section className="section">
-      <h1 className="title">Daftar Konser</h1>
+      <div className="level">
+        <h1 className="title">Daftar Konser</h1>
+        <button className="button is-danger" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
       <table className="table is-fullwidth">
         <thead>
           <tr>
