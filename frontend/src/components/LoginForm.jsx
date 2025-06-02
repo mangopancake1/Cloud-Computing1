@@ -14,9 +14,15 @@ const LoginForm = () => {
     setError("");
     try {
       const res = await loginUser(form);
-      // Simpan token ke localStorage
+      // Simpan token & role ke localStorage
       localStorage.setItem("token", res.data.accessToken);
-      navigate("/concerts");
+      localStorage.setItem("role", res.data.user.role);
+      // Redirect sesuai role
+      if (res.data.user.role === "admin") {
+        navigate("/concerts");
+      } else {
+        navigate("/user/concerts");
+      }
     } catch (err) {
       setError(err?.response?.data?.msg || "Login gagal. Username atau password salah.");
     }
