@@ -35,6 +35,7 @@ export const createUser = async (req, res) => {
       return res.status(400).json({ msg: "Semua field wajib diisi" });
     }
 
+    // Cari username/email tanpa case sensitive
     const existingUser = await User.findOne({ where: { username } });
     if (existingUser) {
       return res.status(400).json({ msg: "Username sudah digunakan" });
@@ -54,6 +55,7 @@ export const createUser = async (req, res) => {
 
     res.status(201).json({ msg: "Registrasi berhasil" });
   } catch (error) {
+    console.error("Register error:", error); // Tambahkan log
     res.status(500).json({ msg: error.message });
   }
 };

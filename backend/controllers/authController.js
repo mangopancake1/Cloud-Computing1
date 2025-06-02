@@ -43,6 +43,7 @@ export const login = async (req, res) => {
       msg: "Login berhasil"
     });
   } catch (error) {
+    console.error("Login error:", error); // Tambahkan log
     res.status(500).json({ msg: error.message });
   }
 };

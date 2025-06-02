@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5010", // ganti ke URL backend jika sudah deploy
-  withCredentials: true, // penting untuk cookie refreshToken
+  baseURL: "https://notes-backend-projectc13-637581838712.us-central1.run.app",
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
