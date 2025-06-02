@@ -23,6 +23,11 @@ const UserTicketNota = () => {
     concert.date
       ? new Date(concert.date).toLocaleDateString()
       : (ticket.date ? new Date(ticket.date).toLocaleDateString() : "-");
+  // Ambil harga dari concert/price, fallback ke ticket.price
+  const price = concert.price || ticket.price || 0;
+  const quantity = ticket.quantity || 1;
+  // Hitung total price
+  const totalPrice = ticket.totalPrice || (price * quantity);
 
   return (
     <section className="section">
@@ -33,7 +38,8 @@ const UserTicketNota = () => {
         <p><strong>Nama Konser:</strong> {concertName}</p>
         <p><strong>Venue:</strong> {venue}</p>
         <p><strong>Tanggal:</strong> {date}</p>
-        <p><strong>Jumlah:</strong> {ticket.quantity}</p>
+        <p><strong>Jumlah:</strong> {quantity}</p>
+        <p><strong>Total Harga:</strong> {totalPrice ? `Rp${totalPrice.toLocaleString()}` : "-"}</p>
         <p><strong>Nama Pembeli:</strong> {ticket.buyerName}</p>
         <p><strong>Email Pembeli:</strong> {ticket.buyerEmail}</p>
         <p><strong>Gender:</strong> {ticket.buyerGender}</p>

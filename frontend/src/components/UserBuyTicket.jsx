@@ -51,7 +51,29 @@ const UserBuyTicket = () => {
           <div className="control">
             <input
               className="input"
-              value={concert ? `${concert.concertName} - ${concert.venue} (${new Date(concert.date).toLocaleDateString()})` : ""}
+              value={concert ? concert.concertName : ""}
+              disabled
+              readOnly
+            />
+          </div>
+        </div>
+        <div className="field">
+          <label className="label">Venue</label>
+          <div className="control">
+            <input
+              className="input"
+              value={concert ? concert.venue : ""}
+              disabled
+              readOnly
+            />
+          </div>
+        </div>
+        <div className="field">
+          <label className="label">Tanggal</label>
+          <div className="control">
+            <input
+              className="input"
+              value={concert ? new Date(concert.date).toLocaleDateString() : ""}
               disabled
               readOnly
             />
