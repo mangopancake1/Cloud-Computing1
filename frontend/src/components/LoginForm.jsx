@@ -15,7 +15,7 @@ const LoginForm = () => {
     try {
       const res = await loginUser(form);
       // Simpan token ke localStorage
-      localStorage.setItem("token", res.data.accessToken || res.data.token);
+      localStorage.setItem("token", res.data.accessToken);
       navigate("/concerts");
     } catch (err) {
       setError(err?.response?.data?.msg || "Login gagal. Username atau password salah.");

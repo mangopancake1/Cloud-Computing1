@@ -7,6 +7,10 @@ export const register = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
 
+    if (!username || !email || !password) {
+      return res.status(400).json({ msg: "Semua field wajib diisi" });
+    }
+
     const existingUser = await User.findOne({ where: { username } });
     if (existingUser) {
       return res.status(400).json({ msg: "Username sudah digunakan" });
@@ -56,16 +60,15 @@ export const login = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      sameSite: "None",
-      secure: true,
+      sameSite: "Lax", // Ganti ke Lax agar bisa di localhost tanpa HTTPS
+      secure: false,   // Ganti ke false agar bisa di localhost tanpa HTTPS
       maxAge: 24 * 60 * 60 * 1000, // 1 hari
     });
 
     res.status(200).json({
-      status: "Success",
-      message: "Login berhasil",
-      userData,
-      accessToken,
+      accessToken, // frontend ambil dari sini
+      user: userData,
+      msg: "Login berhasil"
     });
   } catch (error) {
     res.status(500).json({ msg: error.message });

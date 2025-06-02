@@ -21,5 +21,5 @@ export const updateUser = (id, user) => api.put(`/update-users/${id}`, user);
 export const deleteUser = (id) => api.delete(`/delete-users/${id}`);
 
 // Auth routes
-export const loginUser = (user) => api.post("/login", user);
-export const registerUser = (user) => api.post("/create-users", user);
+export const loginUser = (user) => api.post("/login", user, { withCredentials: true });
+export const registerUser = (user) => api.post("/create-users", user, { withCredentials: true });

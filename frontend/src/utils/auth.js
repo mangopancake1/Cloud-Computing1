@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:5010", // ganti ke URL backend jika sudah deploy
+  withCredentials: true, // penting untuk cookie refreshToken
 });
 
 api.interceptors.request.use((config) => {
