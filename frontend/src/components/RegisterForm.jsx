@@ -13,6 +13,10 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!form.username || !form.email || !form.password) {
+      setError("Semua field wajib diisi");
+      return;
+    }
     try {
       await registerUser(form);
       navigate("/login");

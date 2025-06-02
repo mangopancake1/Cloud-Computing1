@@ -2,34 +2,6 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-// 🔐 Register
-export const register = async (req, res) => {
-  try {
-    const { username, email, password, role } = req.body;
-
-    if (!username || !email || !password) {
-      return res.status(400).json({ msg: "Semua field wajib diisi" });
-    }
-
-    const existingUser = await User.findOne({ where: { username } });
-    if (existingUser) {
-      return res.status(400).json({ msg: "Username sudah digunakan" });
-    }
-
-    const hashPassword = await bcrypt.hash(password, 10);
-    await User.create({
-      username,
-      email,
-      password: hashPassword,
-      role: role || "user",
-    });
-
-    res.status(201).json({ msg: "Registrasi berhasil" });
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-};
-
 // 🔑 Login
 export const login = async (req, res) => {
   try {
@@ -60,13 +32,13 @@ export const login = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      sameSite: "Lax", // Ganti ke Lax agar bisa di localhost tanpa HTTPS
-      secure: false,   // Ganti ke false agar bisa di localhost tanpa HTTPS
-      maxAge: 24 * 60 * 60 * 1000, // 1 hari
+      sameSite: "Lax",
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
-      accessToken, // frontend ambil dari sini
+      accessToken,
       user: userData,
       msg: "Login berhasil"
     });

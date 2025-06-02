@@ -41,3 +41,51 @@ cd ../frontend
 npm install
 npm start
 ```
+
+# Cara Deploy Frontend ke Google App Engine
+
+## 1. Build Project
+
+Pastikan sudah berada di folder `frontend`:
+
+```sh
+npm install
+npm run build
+```
+
+## 2. Siapkan file `app.yaml`
+
+Pastikan file `app.yaml` sudah ada di folder ini (lihat contoh di repo).
+
+## 3. Deploy ke App Engine
+
+Login ke Google Cloud:
+
+```sh
+gcloud auth login
+```
+
+Set project:
+
+```sh
+gcloud config set project [PROJECT_ID]
+```
+
+Deploy:
+
+```sh
+gcloud app deploy
+```
+
+## 4. Akses aplikasi
+
+Setelah deploy selesai, akses aplikasi di:
+
+```
+https://[PROJECT_ID].appspot.com
+```
+
+**Catatan:**
+
+- Pastikan sudah mengaktifkan App Engine di Google Cloud Console.
+- Jika ada perubahan, ulangi langkah build dan deploy.

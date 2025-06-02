@@ -40,6 +40,11 @@ export const createUser = async (req, res) => {
       return res.status(400).json({ msg: "Username sudah digunakan" });
     }
 
+    const existingEmail = await User.findOne({ where: { email } });
+    if (existingEmail) {
+      return res.status(400).json({ msg: "Email sudah digunakan" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
       username,
