@@ -10,8 +10,15 @@ const AddConcert = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createConcert(form);
-    navigate("/concerts");
+    try {
+      await createConcert({
+        ...form,
+        date: form.date // sudah dalam format YYYY-MM-DD dari input type="date"
+      });
+      navigate("/concerts");
+    } catch (err) {
+      alert("Gagal menyimpan konser. Pastikan semua data sudah benar.");
+    }
   };
 
   return (

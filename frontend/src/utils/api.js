@@ -3,7 +3,7 @@ import api from "./auth";
 // Concerts
 export const getConcerts = () => api.get("/concerts");
 export const getConcert = (id) => api.get(`/concerts/${id}`);
-export const createConcert = (concert) => api.post("/create-concert", concert);
+export const createConcert = (concert) => api.post("/create-concert", concert, { headers: { "Content-Type": "application/json" } });
 export const updateConcert = (id, concert) => api.put(`/update-concert/${id}`, concert);
 export const deleteConcert = (id) => api.delete(`/delete-concert/${id}`);
 

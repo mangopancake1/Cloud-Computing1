@@ -17,7 +17,8 @@ const PORT = process.env.PORT || 5010;
 // Konfigurasi CORS - sesuaikan origin frontend jika ada
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://127.0.0.1:3000"
+  "http://127.0.0.1:3000",
+  "https://notes-fe0141-dot-c-13-451813.uc.r.appspot.com"
   // Tambahkan domain frontend produksi jika sudah deploy
 ];
 

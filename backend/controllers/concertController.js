@@ -9,10 +9,13 @@ export const createConcert = async (req, res) => {
       return res.status(400).json({ msg: "Nama konser, venue, dan tanggal wajib diisi" });
     }
 
+    // Pastikan tanggal dalam format YYYY-MM-DD
+    const formattedDate = new Date(date);
+
     const newConcert = await Concert.create({
       concertName,
       venue,
-      date,
+      date: formattedDate,
       description,
     });
 
