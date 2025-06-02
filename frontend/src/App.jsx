@@ -9,6 +9,8 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import HomePage from "./components/HomePage";
 import UserConcertList from "./components/UserConcertList";
+import UserBuyTicket from "./components/UserBuyTicket";
+import UserTicketNota from "./components/UserTicketNota";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path="/tickets/add" element={<AddTicket />} />
         <Route path="/users" element={<UserList />} />
         <Route path="/user/concerts" element={<UserConcertList />} />
+        <Route path="/user/concerts/buy/:concertId" element={<UserBuyTicket />} />
+        <Route path="/user/ticket/nota" element={<UserTicketNota />} />
       </Routes>
     </BrowserRouter>
   );
