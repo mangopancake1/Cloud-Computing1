@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getConcert } from "../utils/api";
 
 const UserTicketNota = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const ticket = location.state?.ticket;
+  const [concert, setConcert] = useState(null);
+
+  useEffect(() => {
+    // Jika ticket ada dan belum ada data konser lengkap, fetch dari API
+    if (ticket && ticket.concertId && (!ticket.concertName || !ticket.venue || !ticket.date)) {
+      getConcert(ticket.concertId)
+        .then(res => setConcert(res.data))
+        .catch(() => setConcert(null));
+    } else if (ticket && ticket.concertName) {
+      // Jika sudah ada data konser di ticket, set langsung
+      setConcert({
+        concertName: ticket.concertName,
+        venue: ticket.venue,
+        date: ticket.date
+      });
+    }
+  }, [ticket]);
 
   if (!ticket) {
     return (
@@ -15,18 +33,14 @@ const UserTicketNota = () => {
     );
   }
 
-  // Ambil info konser dari ticket.concert jika ada, fallback ke ticket.concertName/dll jika tidak ada
-  const concert = ticket.concert || {};
-  const concertName = concert.concertName || ticket.concertName || "-";
-  const venue = concert.venue || ticket.venue || "-";
-  const date =
-    concert.date
-      ? new Date(concert.date).toLocaleDateString()
-      : (ticket.date ? new Date(ticket.date).toLocaleDateString() : "-");
-  // Ambil harga dari concert/price, fallback ke ticket.price
-  const price = concert.price || ticket.price || 0;
+  // Nama konser, venue, tanggal: prioritas dari concert state, fallback ke ticket
+  const concertName = concert?.concertName || ticket.concertName || "-";
+  const venue = concert?.venue || ticket.venue || "-";
+  const date = concert?.date
+    ? new Date(concert.date).toLocaleDateString()
+    : (ticket.date ? new Date(ticket.date).toLocaleDateString() : "-");
+  const price = concert?.price || ticket.price || 0;
   const quantity = ticket.quantity || 1;
-  // Hitung total price
   const totalPrice = ticket.totalPrice || (price * quantity);
 
   return (
