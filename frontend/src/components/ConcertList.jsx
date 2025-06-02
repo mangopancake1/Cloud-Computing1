@@ -38,6 +38,7 @@ const ConcertList = () => {
             <th>Nama</th>
             <th>Venue</th>
             <th>Tanggal</th>
+            <th>Harga</th>
             {isAdmin && <th>Aksi</th>}
           </tr>
         </thead>
@@ -47,6 +48,7 @@ const ConcertList = () => {
               <td>{c.concertName}</td>
               <td>{c.venue}</td>
               <td>{new Date(c.date).toLocaleDateString()}</td>
+              <td>{c.price ? `Rp${c.price.toLocaleString()}` : "-"}</td>
               {isAdmin && (
                 <td>
                   <Link to={`/concerts/edit/${c.id}`} className="button is-small is-info mr-2">Edit</Link>

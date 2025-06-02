@@ -3,7 +3,7 @@ import { createConcert } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const AddConcert = () => {
-  const [form, setForm] = useState({ concertName: "", venue: "", date: "", description: "" });
+  const [form, setForm] = useState({ concertName: "", venue: "", date: "", description: "", price: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,6 +47,12 @@ const AddConcert = () => {
           <label className="label">Deskripsi</label>
           <div className="control">
             <textarea className="textarea" name="description" value={form.description} onChange={handleChange} />
+          </div>
+        </div>
+        <div className="field">
+          <label className="label">Harga (Rp)</label>
+          <div className="control">
+            <input className="input" type="number" name="price" value={form.price} onChange={handleChange} required min="0" />
           </div>
         </div>
         <button className="button is-primary" type="submit">Simpan</button>

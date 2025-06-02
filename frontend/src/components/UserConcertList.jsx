@@ -32,6 +32,7 @@ const UserConcertList = () => {
             <th>Nama</th>
             <th>Venue</th>
             <th>Tanggal</th>
+            <th>Harga</th>
             <th>Deskripsi</th>
             <th>Aksi</th>
           </tr>
@@ -42,6 +43,7 @@ const UserConcertList = () => {
               <td>{c.concertName}</td>
               <td>{c.venue}</td>
               <td>{new Date(c.date).toLocaleDateString()}</td>
+              <td>{c.price ? `Rp${c.price.toLocaleString()}` : "-"}</td>
               <td>{c.description}</td>
               <td>
                 <button

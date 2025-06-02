@@ -40,6 +40,10 @@ const Ticket = db.define("tickets", {
   buyerGender: {
     type: DataTypes.ENUM("male", "female"),
     allowNull: false,
+  },
+  seatName: {
+    type: DataTypes.ENUM("diamond", "gold", "silver"),
+    allowNull: false,
   }
 }, {
   freezeTableName: true,

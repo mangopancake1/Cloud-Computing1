@@ -6,6 +6,8 @@ import User from "../models/userModel.js";
 export const createTicket = async (req, res) => {
   try {
     const {
+      concertId,
+      seatName,
       quantity,
       buyerName,
       buyerEmail,
@@ -14,19 +16,26 @@ export const createTicket = async (req, res) => {
 
     const userId = req.user.id;
 
-    if (!seatClassId || !quantity || !buyerName || !buyerEmail || !buyerGender) {
+    if (!concertId || !seatName || !quantity || !buyerName || !buyerEmail || !buyerGender) {
       return res.status(400).json({ msg: "Semua field wajib diisi" });
     }
 
-    const seatClass = await SeatClass.findByPk(seatClassId);
-    if (!seatClass) return res.status(404).json({ msg: "Seat class tidak ditemukan" });
+    // Ambil harga concert dari DB
+    const concert = await Concert.findByPk(concertId);
+    if (!concert) return res.status(404).json({ msg: "Konser tidak ditemukan" });
 
-    const totalPrice = seatClass.price * quantity;
+    let seatMultiplier = 1;
+    if (seatName === "diamond") seatMultiplier = 3;
+    else if (seatName === "gold") seatMultiplier = 2;
+    else if (seatName === "silver") seatMultiplier = 1;
+    else return res.status(400).json({ msg: "Pilihan seat tidak valid" });
+
+    const totalPrice = concert.price * quantity * seatMultiplier;
 
     const ticket = await Ticket.create({
       userId,
-      concertId: seatClass.concertId, // ✅ jika seatClass punya concertId
-      seatClassId,
+      concertId,
+      seatName,
       quantity,
       totalPrice,
       buyerName,
@@ -38,13 +47,13 @@ export const createTicket = async (req, res) => {
       msg: "Tiket berhasil dipesan",
       data: {
         ticketId: ticket.id,
+        concertId,
+        seatName,
+        quantity,
+        totalPrice,
         buyerName,
         buyerEmail,
-        buyerGender,
-        seatClass: seatClass.className,
-        concertId: seatClass.concertId,
-        quantity,
-        totalPrice
+        buyerGender
       }
     });
   } catch (error) {

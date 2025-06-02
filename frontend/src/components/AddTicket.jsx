@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AddTicket = () => {
   const [form, setForm] = useState({
     concertId: "",
-    seatClassId: "",
+    seatName: "diamond",
     quantity: 1,
     buyerName: "",
     buyerEmail: "",
@@ -32,9 +32,15 @@ const AddTicket = () => {
           </div>
         </div>
         <div className="field">
-          <label className="label">ID Seat Class</label>
+          <label className="label">Seat</label>
           <div className="control">
-            <input className="input" name="seatClassId" value={form.seatClassId} onChange={handleChange} required />
+            <div className="select">
+              <select name="seatName" value={form.seatName} onChange={handleChange} required>
+                <option value="diamond">Diamond</option>
+                <option value="gold">Gold</option>
+                <option value="silver">Silver</option>
+              </select>
+            </div>
           </div>
         </div>
         <div className="field">

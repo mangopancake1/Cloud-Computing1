@@ -6,7 +6,7 @@ const UserBuyTicket = () => {
   const { concertId } = useParams();
   const [form, setForm] = useState({
     concertId: concertId || "",
-    seatClassId: "",
+    seatName: "diamond",
     quantity: 1,
     buyerName: "",
     buyerEmail: "",
@@ -20,10 +20,8 @@ const UserBuyTicket = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Simpan data ke backend
       const res = await createTicket(form);
-      // Kirim data ke halaman nota via state
-      navigate("/user/ticket/nota", { state: { ticket: res.data } });
+      navigate("/user/ticket/nota", { state: { ticket: res.data.data } });
     } catch (err) {
       setError("Gagal membeli tiket.");
     }
@@ -41,9 +39,15 @@ const UserBuyTicket = () => {
           </div>
         </div>
         <div className="field">
-          <label className="label">ID Seat Class</label>
+          <label className="label">Seat</label>
           <div className="control">
-            <input className="input" name="seatClassId" value={form.seatClassId} onChange={handleChange} required />
+            <div className="select">
+              <select name="seatName" value={form.seatName} onChange={handleChange} required>
+                <option value="diamond">Diamond</option>
+                <option value="gold">Gold</option>
+                <option value="silver">Silver</option>
+              </select>
+            </div>
           </div>
         </div>
         <div className="field">

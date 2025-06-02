@@ -3,10 +3,10 @@ import Concert from "../models/concertModel.js";
 // Pastikan field yang diterima: concertName, venue, date, description
 export const createConcert = async (req, res) => {
   try {
-    const { concertName, venue, date, description } = req.body;
+    const { concertName, venue, date, description, price } = req.body;
 
-    if (!concertName || !venue || !date) {
-      return res.status(400).json({ msg: "Nama konser, venue, dan tanggal wajib diisi" });
+    if (!concertName || !venue || !date || price == null) {
+      return res.status(400).json({ msg: "Nama konser, venue, tanggal, dan harga wajib diisi" });
     }
 
     // Pastikan tanggal dalam format YYYY-MM-DD
@@ -17,6 +17,7 @@ export const createConcert = async (req, res) => {
       venue,
       date: formattedDate,
       description,
+      price,
     });
 
     res.status(201).json({ msg: "Konser berhasil ditambahkan", data: newConcert });
@@ -49,7 +50,7 @@ export const getConcertById = async (req, res) => {
 // 📌 Update konser berdasarkan ID (admin)
 export const updateConcert = async (req, res) => {
   try {
-    const { concertName, venue, date, description } = req.body;
+    const { concertName, venue, date, description, price } = req.body;
 
     const concert = await Concert.findByPk(req.params.id);
     if (!concert) return res.status(404).json({ msg: "Konser tidak ditemukan" });
@@ -58,6 +59,7 @@ export const updateConcert = async (req, res) => {
     concert.venue = venue || concert.venue;
     concert.date = date || concert.date;
     concert.description = description || concert.description;
+    if (price != null) concert.price = price;
 
     await concert.save();
 

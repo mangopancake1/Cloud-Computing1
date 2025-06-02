@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const EditConcert = () => {
   const { id } = useParams();
-  const [form, setForm] = useState({ concertName: "", venue: "", date: "", description: "" });
+  const [form, setForm] = useState({ concertName: "", venue: "", date: "", description: "", price: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,6 +45,12 @@ const EditConcert = () => {
           <label className="label">Deskripsi</label>
           <div className="control">
             <textarea className="textarea" name="description" value={form.description} onChange={handleChange} />
+          </div>
+        </div>
+        <div className="field">
+          <label className="label">Harga (Rp)</label>
+          <div className="control">
+            <input className="input" type="number" name="price" value={form.price} onChange={handleChange} required min="0" />
           </div>
         </div>
         <button className="button is-primary" type="submit">Update</button>
