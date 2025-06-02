@@ -15,9 +15,14 @@ const UserTicketNota = () => {
     );
   }
 
-  // Ambil info konser jika tersedia di ticket (misal ticket.concert)
-  const concert = ticket.concert || ticket.concertData || {};
-  // Fallback: jika tidak ada, tampilkan ID saja
+  // Ambil info konser dari ticket.concert jika ada, fallback ke ticket.concertName/dll jika tidak ada
+  const concert = ticket.concert || {};
+  const concertName = concert.concertName || ticket.concertName || "-";
+  const venue = concert.venue || ticket.venue || "-";
+  const date =
+    concert.date
+      ? new Date(concert.date).toLocaleDateString()
+      : (ticket.date ? new Date(ticket.date).toLocaleDateString() : "-");
 
   return (
     <section className="section">
@@ -25,9 +30,9 @@ const UserTicketNota = () => {
       <div className="box">
         <p><strong>ID Tiket:</strong> {ticket.id || ticket.ticketId}</p>
         <p><strong>ID Konser:</strong> {ticket.concertId}</p>
-        <p><strong>Nama Konser:</strong> {concert.concertName || ticket.concertName || "-"}</p>
-        <p><strong>Venue:</strong> {concert.venue || ticket.venue || "-"}</p>
-        <p><strong>Tanggal:</strong> {concert.date ? new Date(concert.date).toLocaleDateString() : (ticket.date ? new Date(ticket.date).toLocaleDateString() : "-")}</p>
+        <p><strong>Nama Konser:</strong> {concertName}</p>
+        <p><strong>Venue:</strong> {venue}</p>
+        <p><strong>Tanggal:</strong> {date}</p>
         <p><strong>Jumlah:</strong> {ticket.quantity}</p>
         <p><strong>Nama Pembeli:</strong> {ticket.buyerName}</p>
         <p><strong>Email Pembeli:</strong> {ticket.buyerEmail}</p>

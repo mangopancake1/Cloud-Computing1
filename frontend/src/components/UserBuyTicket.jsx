@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { createTicket } from "../utils/api";
+import { createTicket, getConcert } from "../utils/api";
 
 const UserBuyTicket = () => {
   const { concertId } = useParams();
+  const [concert, setConcert] = useState(null);
   const [form, setForm] = useState({
     concertId: concertId || "",
     seatName: "diamond",
@@ -14,6 +15,19 @@ const UserBuyTicket = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Ambil detail konser berdasarkan concertId
+    const fetchConcert = async () => {
+      try {
+        const res = await getConcert(concertId);
+        setConcert(res.data);
+      } catch (err) {
+        setConcert(null);
+      }
+    };
+    if (concertId) fetchConcert();
+  }, [concertId]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -33,9 +47,14 @@ const UserBuyTicket = () => {
       {error && <div className="notification is-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="field">
-          <label className="label">ID Konser</label>
+          <label className="label">Nama Konser</label>
           <div className="control">
-            <input className="input" name="concertId" value={form.concertId} readOnly />
+            <input
+              className="input"
+              value={concert ? `${concert.concertName} - ${concert.venue} (${new Date(concert.date).toLocaleDateString()})` : ""}
+              disabled
+              readOnly
+            />
           </div>
         </div>
         <div className="field">
