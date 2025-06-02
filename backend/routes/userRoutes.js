@@ -11,11 +11,10 @@ import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
 const router = express.Router();
 
+router.put("/update-users/:id", verifyUser, updateUser); 
 
-router.put("/:id", verifyUser, updateUser); 
-
-router.get("/", verifyAdmin, getUsers);
-router.get("/:id", verifyAdmin, getUserById);
-router.delete("/:id", verifyAdmin, deleteUser);
+router.get("/users", verifyAdmin, getUsers);
+router.get("/users/:id", verifyAdmin, getUserById);
+router.delete("/delete-users/:id", verifyAdmin, deleteUser);
 
 export default router;

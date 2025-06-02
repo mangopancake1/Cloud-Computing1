@@ -33,10 +33,10 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Mount route berdasarkan fungsi dan akses
-app.use("/api/auth", authRoutes);           // Autentikasi user & admin
-app.use("/api/users", userRoutes);           // Manajemen user
-app.use("/api/concerts", concertRoutes);     // CRUD konser // CRUD kelas tempat duduk
-app.use("/api/tickets", ticketRoutes);       // Manajemen tiket pembelian
+app.use("/", authRoutes);           // Autentikasi user & admin
+app.use("/", userRoutes);           // Manajemen user
+app.use("/", concertRoutes);        // CRUD konser // CRUD kelas tempat duduk
+app.use("/", ticketRoutes);         // Manajemen tiket pembelian
 
 // Sinkronisasi database dan start server
 (async () => {

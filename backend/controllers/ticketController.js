@@ -110,3 +110,27 @@ export const getTicketById = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+// Update ticket
+export const updateTicket = async (req, res) => {
+  try {
+    const ticket = await Ticket.findByPk(req.params.id);
+    if (!ticket) return res.status(404).json({ msg: "Tiket tidak ditemukan" });
+    await ticket.update(req.body);
+    res.status(200).json({ msg: "Tiket berhasil diupdate", data: ticket });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+// Delete ticket
+export const deleteTicket = async (req, res) => {
+  try {
+    const ticket = await Ticket.findByPk(req.params.id);
+    if (!ticket) return res.status(404).json({ msg: "Tiket tidak ditemukan" });
+    await ticket.destroy();
+    res.status(200).json({ msg: "Tiket berhasil dihapus" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
