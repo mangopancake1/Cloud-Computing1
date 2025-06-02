@@ -1,7 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import PostList from "./components/PostList";
-import AddPost from "./components/AddPost";
-import EditPost from "./components/EditPost";
+import ConcertList from "./components/ConcertList";
+import AddConcert from "./components/AddConcert";
+import EditConcert from "./components/EditConcert";
+import TicketList from "./components/TicketList";
+import AddTicket from "./components/AddTicket";
+import UserList from "./components/UserList";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import HomePage from "./components/HomePage";
@@ -14,14 +17,12 @@ function App() {
         <Route path="/welcome" element={<HomePage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route
-          path="/notes"
-          element={
-            localStorage.getItem("token") ? <PostList /> : <Navigate to="/welcome" />
-          }
-        />
-        <Route path="/add" element={<AddPost />} />
-        <Route path="/edit/:id" element={<EditPost />} />
+        <Route path="/concerts" element={<ConcertList />} />
+        <Route path="/concerts/add" element={<AddConcert />} />
+        <Route path="/concerts/edit/:id" element={<EditConcert />} />
+        <Route path="/tickets" element={<TicketList />} />
+        <Route path="/tickets/add" element={<AddTicket />} />
+        <Route path="/users" element={<UserList />} />
       </Routes>
     </BrowserRouter>
   );
